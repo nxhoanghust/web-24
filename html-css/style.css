@@ -1,0 +1,38 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.banner{
+    height: 35vh;
+    background-image: url(https://dynaimage.cdn.cnn.com/cnn/w_1200/http%3A%2F%2Fcdn.cnn.com%2Fcnnnext%2Fdam%2Fassets%2F180913130928-corippo-switzerland-stock-super-tease.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+    padding-top: 8vh;
+    padding-left: 70px;
+}
+
+.banner h1, .banner h4{
+    color: white;
+}
+
+.main-content{
+    padding-top: 5vh;
+    padding-bottom: 22vh;
+    padding-left: 20px;
+    background-color: #c2c4bc;
+}
+.title  h2{
+    padding-bottom: 1vh;
+}
+.title h6{
+    padding-bottom: 5vh;
+}
+
+#d1{
+    display: inline-block;
+    width: 32%;
+}
+
+
