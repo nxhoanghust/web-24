@@ -1,0 +1,113 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body{
+    display: flex;
+    flex-direction: row;
+    padding: 25px;
+}
+
+#ava{
+    border-radius: 50%;
+    border-style: solid;
+    border-width: 1px;
+}
+
+#picture{
+    padding-top: 3vh;
+    padding-bottom: 2vh;
+
+}
+
+#mugi{
+    padding-top: 2vh;
+}
+.container{
+    width: 20%;
+    height: 1000px;
+    display: flex;
+    flex-direction: column;
+    padding-left: 2vh;
+}
+
+
+.content{
+    height: 70%;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    padding-top: 7vh;
+}
+
+h4{
+    height: 41px;
+}
+
+#link{
+    height: 15%;
+}
+
+.main{
+    width: 70%;
+    flex-grow: 1;
+}
+
+
+#slogo{
+    height: 18px;
+    width: 18px;
+    margin: 6px;
+}
+
+
+.main{
+    margin:10px;
+    padding-top: 120px;
+    padding-left: 75px;
+    border-style: solid;
+    border-width: 1px;
+    border-color: #ffffff #ffffff #ffffff #030303 ;
+}
+
+.main-container{
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    height: 100%;
+}
+
+.row{
+    width: 1000px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+}
+
+#icon{
+    margin-top: 45px;
+    background-color: #8741cc;
+    padding: 3px;
+    padding-bottom: 5px;
+    margin-bottom: 17px;
+}
+
+#item1,#item2{
+    height: 40%;
+}
+h3{
+    padding-bottom: 10px;
+}
+
+#button{
+    height: 30px;
+    width: 30px;
+    margin-left: 250px;
+    margin-top: 50px;
+    border: #4e5052;
+    border-style: solid;
+}
