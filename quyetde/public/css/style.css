@@ -1,0 +1,40 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+}
+.top{
+    display: flex;
+    height: 10%;  
+    background-color: brown;  
+}
+
+#a{
+    width: 10%;
+}
+
+.choice{
+    display: flex;
+    height: 30%;
+    text-align: center;
+}
+.bottom{
+    height: 70%;
+}
+.button{
+    height: 10vh;
+    margin-left: 40%;
+}
+#cauhoi{
+    text-align: center;
+
+}
+
+#sai{
+    width: 50%;
+}
