@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
 body{
     display: flex;
@@ -11,30 +12,126 @@ body{
 .top{
     display: flex;
     height: 10%;  
-    background-color: brown;  
+    background-color: #292727;  
+    color:#e3e3dc;
+}
+.quiz{
+    padding-top: 5px;
+    font-size: 32px;
 }
 
 #a{
-    width: 10%;
+    width: 20%;
+    text-align: center;
+    text-decoration: none;
+    font-size: 26px;
+}
+.b{
+    padding-top: 5px;
+}
+.b:visited{
+    color: #dfe2e8;
+}
+.b:hover{
+    background-color: rgb(2, 2, 2);
+    font-size: 25px;
+    color: whitesmoke;
 }
 
 .choice{
     display: flex;
     height: 30%;
     text-align: center;
+    margin-left: 15%;
 }
 .bottom{
     height: 70%;
+    padding-top: 10%;
 }
 .button{
+    margin-top: 15vh;
     height: 10vh;
-    margin-left: 40%;
+    margin-left: 42%;
 }
 #cauhoi{
     text-align: center;
+    font-size: 56px;
+    padding-bottom: 5%;
+}
+
+#tf{
+    height: 53px;
+    width: 19%;
+    margin-left: 15%;
+    text-decoration: none;
+    font-size: 23px;
+    margin-bottom: 5px;
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 6px;
+    color: white;
+}
+
+.True{
+    padding-top: 8px;
+    background-color: #1d6ec4;
+    border-color: #0e2c4d;
 
 }
 
-#sai{
-    width: 50%;
+.False{
+    padding-top: 8px;
+    background-color: #f01818;
+    border-color: #6e0c14;
 }
+
+#pic-up{
+    margin-top: 2px;
+    margin-right: 5px;
+    width: 28px;
+    height: 23px;
+    color: #dfe2e8;
+}
+#pic-down{
+    padding-top: 0px;
+    margin-top: 2px;
+    margin-right: 7px;
+    width: 28px;
+    height: 23px;
+    transform: rotate(180deg);
+}
+
+.True:hover{
+    background-color: #116efa;
+}
+
+.False:hover{
+    background-color: #ff1212;
+}
+
+.vote{
+    color: #2c2b30;
+    height: 20px;
+    width: 15px;
+    text-decoration: none;
+    font-size: 24px;
+    padding: 5px;
+    text-align: center;
+    border-style: double;
+    border-width: 3px;
+    border-color: #2c2b30;
+    border-radius: 8px;
+}
+
+#vote1{
+    margin-left: -2%;
+}
+#vote2{
+    margin-left: 3%;
+}
+.vote:hover{
+    color:#242323;
+    background-color: hsl(60, 1%, 82%);
+    border-style:  solid double;
+}
+

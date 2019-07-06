@@ -2,6 +2,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
 }
 body{
     display: flex;
@@ -9,13 +10,33 @@ body{
     height: 500px;
 }
 .top{
+    
     display: flex;
     height: 10%;  
-    background-color: brown;  
+    background-color: #292727;  
+    color:#e3e3dc;
+}
+.quiz{
+    padding-top: 5px;
+    font-size: 32px;
 }
 
 #a{
-    width: 10%;
+    width: 20%;
+    text-align: center;
+    text-decoration: none;
+    font-size: 26px;
+}
+.b{
+    padding-top: 5px;
+}
+.b:visited{
+    color: #dfe2e8;
+}
+.b:hover{
+    background-color: rgb(2, 2, 2);
+    font-size: 25px;
+    color: whitesmoke;
 }
 
 .choice{
@@ -25,16 +46,72 @@ body{
 }
 .bottom{
     height: 70%;
+    padding-top: 10%;
 }
 .button{
+    margin-top: 7vh;
     height: 10vh;
-    margin-left: 40%;
+    margin-left: 42%;
 }
 #cauhoi{
     text-align: center;
-
+    font-size: 56px;
 }
 
-#sai{
-    width: 50%;
+#tf{
+    height: 40px;
+    width: 42%;
+    background-color: #aaf2ab;
+    margin-left: 5%;
+    text-decoration: none;
+    font-size: 32px;
+    margin-bottom: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-color: #2c2b30;
+}
+
+
+
+
+h1{
+    padding: 10vh;
+    height: 30vh;
+    font-size: 50px;
+    text-align: center;
+}
+
+#myInput{
+    margin-left: 7%;
+    height: 18vh;
+    width: 80%;
+}
+#demo{
+    margin-left: 7%;
+
+}
+.button{
+    margin-left: 7%;
+    height: 4vh;
+    width: 12vh;
+    border-radius: 5px;
+}
+
+#result{
+    margin-left: 7%;
+    color: red;
+    font-style: italic;
+    font-weight: bold;
+}
+
+.box{
+    margin-left: 7%;
+    height: 8vh;
+    width: 15vh;
+    text-align: center;
+    padding: 2vh;
+    color: red;
+    font-style: oblique;
+    font-weight: bold;
+
 }

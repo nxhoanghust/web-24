@@ -1,29 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Question</title>
     <link rel="stylesheet" href="../css/style1.css" type="text/css">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
 </head>
+
 <body>
     <div class="top">
-        <div id="a">Quyet de</div>
-        <a id="a" href="./index1.html">Hoi Nhanh</a>
-        <a id="a" href="./index.html">Dap gon</a>
+        <div id="a" class="quiz">QUICKQUIZ!!</div>
+        <a id="a" class="b" href="../html/index1.html">Question</a>
+        <a id="a" class="b" href="../html/index.html">Answer</a>
     </div>
 
     <div class="bottom">
         <div>
-            <h1>Hay hoi</h1>
+            <h1>Enter your question and Submit</h1>
         </div>
         <div>
-            <form >
-                <textarea></textarea>
+            <form>
+                <textarea id="myInput"></textarea>
             </form>
-            <button>Submit</button>
+            <div id="demo">Character left: 200/200</div>
+            <div id="result"></div>
+            <div id="noti" class="box"></div>
+            <button class="button" id="submit">Submit</button>
         </div>
     </div>
 </body>
+<script src="../js/main.js"></script>
+
 </html>
