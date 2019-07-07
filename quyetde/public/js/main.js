@@ -1,3 +1,4 @@
+
 //query element object
 //document.getElementById();
 //document.getElementsByClassName();
@@ -11,8 +12,9 @@ window.onload = function () {
     var input = document.getElementById('myInput');
     input.addEventListener("input", () => {
         var x = input.value.length;
+        var y = 200 - x;
         if (check(x)) {
-            document.getElementById('demo').innerHTML = "Character left: " + (200 - x) + "/200";
+            document.getElementById('demo').innerHTML = `Characters left: ${y}/200`;
             document.getElementById('result').innerHTML = "";
             document.getElementById('noti').innerHTML = "";
         }
@@ -20,17 +22,46 @@ window.onload = function () {
             document.getElementById('result').innerHTML = "Your question is more than 200 characters!!";
         }
     });
+
+    //url param
+    //url query
     var submit = document.getElementById('submit');
-    submit.addEventListener('click', () => {
+    submit.addEventListener('click', (event) => {
+        const questionContent = input.value;
         var x = input.value.length;
-        if(x!=0 && check(x)){
-            window.location.href = '../about';
+        if (x != 0 && check(x)) {
+            fetch(`/create-question`,{
+                method:'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    content: questionContent,
+                }),
+            })
+                .then((res)=>{
+                    return res.json();
+                })
+                .then((data)=>{
+                    if(data.sucess){
+                        //redirect question details
+                        console.log(data);
+                        window.location.href= 'https://google.com';
+                    }else{
+                        window.alert(data.message);
+                    }
+                })
+                .catch((error)=>{
+                    console.log(error);
+                    window.alert(error.message);
+                });
+
         }
-        else if(x==0){
+        else if (x == 0) {
             document.getElementById('noti').innerHTML = "Please enter question!!";
 
         }
-        else{
+        else {
 
         }
     });
