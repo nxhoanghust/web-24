@@ -17,6 +17,7 @@ window.onload = function () {
             document.getElementById('noti').innerHTML = "";
         }
         else {
+            document.getElementById('demo').innerHTML = "Character left: 0/200";
             document.getElementById('result').innerHTML = "Your question is more than 200 characters!!";
         }
     });
