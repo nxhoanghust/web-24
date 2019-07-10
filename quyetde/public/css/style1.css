@@ -116,3 +116,9 @@ h1{
     font-weight: bold;
 
 }
+
+.button:hover{
+    color:#242323;
+    background-color: hsl(60, 1%, 82%);
+    border-style:  solid double;
+}

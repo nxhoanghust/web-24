@@ -1,0 +1,127 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+body{
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+}
+.top{
+    
+    display: flex;
+    height: 10%;  
+    background-color: #292727;  
+    color:#e3e3dc;
+}
+.quiz{
+    padding-top: 5px;
+    font-size: 32px;
+}
+
+#a{
+    color: #dfe2e8;
+    width: 20%;
+    text-align: center;
+    text-decoration: none;
+    font-size: 26px;
+}
+.b{
+    padding-top: 5px;
+}
+.b:visited{
+    color: #dfe2e8;
+}
+.b:hover{
+    background-color: rgb(2, 2, 2);
+    font-size: 25px;
+    color: whitesmoke;
+}
+
+.vote{
+    margin: 92px;
+    display: flex;
+    height: 40px;
+    margin-top: 60px;
+    margin-left: 10%;
+    margin-right: 10%;
+}
+
+.ld{
+    width: 30%;
+    text-align: center;
+}
+
+#pic-up{
+    margin-top: 2px;
+    margin-right: 5px;
+    width: 28px;
+    height: 23px;
+    color: #dfe2e8;
+}
+#pic-down{
+    padding-top: 0px;
+    margin-top: 2px;
+    margin-right: 7px;
+    width: 28px;
+    height: 23px;
+    transform: rotate(180deg);
+}
+
+#like{
+    width: 50%;
+    padding-top: 3px;
+    background-color: #1d6ec4;
+    border-color: #0e2c4d;  
+    border-radius: 5px 0px 0px 5px;
+
+}
+
+#dislike{
+    width: 50%;
+
+    padding-top: 3px;
+    background-color: #f01818;
+    border-color: #6e0c14;
+    border-radius: 0px 5px 5px 0px;
+}
+
+.question{
+    margin-top: 60px;
+    margin-left: 35px;
+    margin-right: 35px;
+    text-align: center;
+    font-size: 40px;
+}
+
+#total{
+    margin-top: 60px;
+    margin-left: 35px;
+    margin-right: 35px;
+    text-align: center;
+    font-size: 26px;
+
+}
+
+.button{
+    margin-left: 45%;
+    color: #2c2b30;
+    height: 20px;
+    width: 15px;
+    text-decoration: none;
+    font-size: 24px;
+    padding: 5px;
+    text-align: center;
+    border-style: double;
+    border-width: 3px;
+    border-color: #2c2b30;
+    border-radius: 8px;
+}
+
+.button:hover{
+    color:#242323;
+    background-color: hsl(60, 1%, 82%);
+    border-style:  solid double;
+}

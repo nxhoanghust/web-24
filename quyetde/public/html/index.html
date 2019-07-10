@@ -8,30 +8,31 @@
     <title>Answer</title>
     <link rel="stylesheet" href="../css/style.css" type="text/css">
     <link href="https://fonts.googleapis.com/css?family=Roboto:500&display=swap" rel="stylesheet">
+    <script src="../js/answer.js"></script>
 
 </head>
 
-<body>
+<body onload="loadQuestion()">
     <div class="top">
         <div id="a" class="quiz">QUICKQUIZ!!</div>
-        <a id="a" class="b" href="../html/index1.html">Question</a>
-        <a id="a" class="b" href="../html/index.html">Answer</a>
+        <a id="a" class="b" href="./ask">Question</a>
+        <a id="a" class="b" href="./">Answer</a>
     </div>
 
     <div class="bottom">
-        <div id="cauhoi">asdasd</div>
+        <div id="cauhoi"></div>
         <div class="choice">
-            <a id="tf" class="False" href="">
-                <img id="pic-down" src="../picture/liek.png" />
+            <a id="tf" class="False" href="/">
+                <img id="pic-down" src="../picture/liek.png" onclick="functionFalse()" />
                 False
             </a>
-            <a id="tf" class="True" href="">
-                <img id="pic-up" src="../picture/liek.png" />
+            <a id="tf" class="True" href="/">
+                <img id="pic-up" src="../picture/liek.png" onclick="functionTrue()"/>
                 True
             </a>
         </div>
         <div class="button">
-            <a class="vote" id="vote1" href="">Vote Result</a>
+            <a class="vote" id="vote1" href="./vote.html">Vote Result</a>
             <a class="vote" id="vote2" href="">Another Question</a>
         </div>
     </div>
