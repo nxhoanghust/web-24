@@ -1,97 +1,84 @@
-function question() {
-    fetch('/data', {
+let value = [];
+function loadQuestion() {
+    fetch(`/data`, {
         method: "GET",
+        headers: {
+            'Content-Type': 'application/json',
+        },
     })
         .then((res) => {
             return res.json();
         })
         .then((data) => {
             document.getElementById('cauhoi').innerHTML = data.questionContent;
+            value = data;
+            console.log(value);
         })
         .catch((error) => {
             console.log(error);
-            window.alert(error.message);
+            //window.alert(error.message);
         });
 }
+function updateFalse() {
+    fetch(`/update`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
 
-function funtionFalse() {
-    fetch('/data', {
-        method: "GET",
+        body: JSON.stringify({
+            id: value.id,
+            dislike: value.dislike + 1,
+            like: value.like,
+        }),
     })
         .then((res) => {
             return res.json();
         })
         .then((data) => {
-            fetch('/data-update', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: data.id,
-                    dislike: data.dislike + 1,
-                    like: data.like,
-                }),
-            })
-                .then((res) => {
-                    return res.json();
-                })
-                .then((data1) => {
-                    if (data1.sucess) {
-                        window.location.href = "http://localhost:3000/ask/" + data1.id;
-                    }
-                    else {
-                        window.alert(data1.message);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    window.alert(error.message);
-                });
+            window.location.href = "./ask/" + value.id;
+            if (data.success) {
+            }
+            else {
+                //window.alert(data.message);
+            }
         })
         .catch((error) => {
             console.log(error);
-            window.alert(error.message);
+            //window.alert(error.message);
         });
 }
 
-function funtionTrue() {
-    fetch('/data', {
-        method: "GET",
+function updateTrue() {
+    fetch(`/update`, {
+        method: "POST",
+        headers: {
+            'Content-Type': 'application/json',
+        },
+
+        body: JSON.stringify({
+            id: value.id,
+            dislike: value.dislike,
+            like: value.like + 1,
+        }),
     })
         .then((res) => {
             return res.json();
         })
         .then((data) => {
-            fetch('/data-update', {
-                method: "POST",
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    id: data.id,
-                    dislike: data.dislike,
-                    like: data.like + 1,
-                }),
-            })
-                .then((res) => {
-                    return res.json();
-                })
-                .then((data1) => {
-                    if (data1.sucess) {
-                        window.location.href = "http://localhost:3000/ask/" + data1.id;
-                    }
-                    else {
-                        window.alert(data1.message);
-                    }
-                })
-                .catch((error) => {
-                    console.log(error);
-                    window.alert(error.message);
-                });
+            window.location.href = "./ask/"+value.id;
+            if (data1.success) {
+            }
+            else {
+                //window.alert(data.message);
+            }
         })
         .catch((error) => {
+            //window.alert(error.message);
             console.log(error);
-            window.alert(error.message);
         });
 }
+
+function showVote() {
+    window.location.href = "./ask/" + value.id;
+};

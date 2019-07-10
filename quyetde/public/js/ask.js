@@ -47,7 +47,7 @@ window.onload = function () {
                     if(data.sucess){
                         //redirect question details
                         
-                        window.location.href= 'http://localhost:3000/ask/'+data.id;
+                        window.location.href= `./ask/${data.id}`;
                         console.log(data);
                     }else{
                         window.alert(data.message);

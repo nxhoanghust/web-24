@@ -6,7 +6,6 @@ const fs = require('fs');
 const app = express();
 app.use(express.static('public'));
 app.use(bodyParser.json());
-
 app.get('/', (req, res) => {
     res.sendFile(path.resolve(__dirname, './public/html/index.html'));
 });
@@ -14,6 +13,11 @@ app.get('/', (req, res) => {
 app.get('/ask', (req, res) => {
     res.sendFile(path.resolve(__dirname, './public/html/index1.html'));
 });
+
+app.get('/vote', (req, res) => {
+    res.sendFile(path.resolve(__dirname, './public/html/vote.html'));
+});
+
 
 /*app.post(`/create-question`,(req,res)=>{
     console.log(req.query);
@@ -66,7 +70,7 @@ app.post(`/create-question`, (req, res) => {
 
 });
 
-app.post(`/data-update`, (req, res) => {
+app.post(`/update`, (req, res) => {
     fs.readFile('./data.json', { encoding: 'utf8' }, (error, data) => {
         if (error) {
             res.status(500).json({
@@ -74,7 +78,7 @@ app.post(`/data-update`, (req, res) => {
                 message: error.message,
             });
         } else {
-            const questionList = JSON.parse(data);
+            const questionList1 = JSON.parse(data);
             //const questionUpdate = questionList[req.body.number];
             /*const questionUpdate = {
                 id: req.body.id,
@@ -83,18 +87,16 @@ app.post(`/data-update`, (req, res) => {
                 dislike: req.body.dislike,
                 createAt: req.body.createAt,
             };*/
-            for (let i = 0; i <= questionList.length; i++) {
-                console.log(i);
-                if (questionList[i] === req.body.id) {
-                    questionList[i].like = req.body.like;
-                    questionList[i].dislike = req.body.dislike;
+            for (let i = 0; i < questionList1.length; i++) {
+                if (questionList1[i].id === req.body.id) {
+                    questionList1[i].like = req.body.like;
+                    questionList1[i].dislike = req.body.dislike;
                     break;
                 }
             }
-            fs.writeFile('./data.json', JSON.stringify(questionList), { encoding: 'utf8' }, (error) => {
+            fs.writeFile('./data.json', JSON.stringify(questionList1), { encoding: 'utf8' }, (error) => {
                 if (error) {
                     res.status(500).json({
-                        sucess: false,
                         message: error.message,
                     });
                 } else {
@@ -111,7 +113,7 @@ app.post(`/data-update`, (req, res) => {
 });
 
 
-/*app.get('/ask/:id', (req, res) => {
+app.get(`/ask/:id`, (req, res) => {
     fs.readFile('./data.json', { encoding: 'utf8' }, (error, data) => {
         if (error) {
             res.status(500).json({
@@ -119,28 +121,35 @@ app.post(`/data-update`, (req, res) => {
                 message: error.message,
             });
         } else {
-            const questionList = JSON.parse(data);
-            const questionPop = questionList.pop();
-            //res.json(questionList);
-            //console.log(res.json(questionPop).questionContent);
-            //console.log(questionPop);
-            //console.log(req.params);
-            JSON.stringify(questionPop);
-            res.json({
-                id: questionPop.id,
-                content: questionPop.questionContent,
-                like: questionPop.like,
-                dislike: questionPop.dislike,
+            const questionList2 = JSON.parse(data);
+            var i = 0;
+            while (1) {
+                if (req.params.id == questionList2[i].id) {
+                    break;
+                }
+                else i++;
+            }
+            fs.writeFile('./tmp.json', JSON.stringify(questionList2[i]), { encoding: 'utf8' }, (error) => {
+                if (error) {
+                    res.status(500).json({
+                        message: error.message,
+                    });
+                }
             });
- 
+
         }
+
     });
-});*/
-
-app.get('/ask/:id', (req, res) => {
     res.sendFile(path.resolve(__dirname, './public/html/vote.html'));
-
 });
+
+app.get(`/datatmp`, (req, res) => {
+    fs.readFile('./tmp.json', (error, data) => {
+        const aloha = JSON.parse(data);
+        res.json(aloha);
+    });
+});
+
 
 app.get(`/data`, (req, res) => {
     fs.readFile('./data.json', (error, data) => {

@@ -78,17 +78,27 @@ body{
     border-radius: 5px 0px 0px 5px;
 
 }
+#textdislike{
+    display: inline;
+    color: whitesmoke;
+    font-size: 20px;
+}
+
+#textlike{
+    display: inline;
+    color: whitesmoke;
+    font-size: 20px;
+}
 
 #dislike{
     width: 50%;
-
     padding-top: 3px;
     background-color: #f01818;
     border-color: #6e0c14;
     border-radius: 0px 5px 5px 0px;
 }
 
-.question{
+#question{
     margin-top: 60px;
     margin-left: 35px;
     margin-right: 35px;
