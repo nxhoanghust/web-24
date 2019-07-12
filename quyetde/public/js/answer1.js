@@ -1,6 +1,6 @@
-let value = [];
+let value =[];
 function loadQuestion() {
-    fetch(`/data`, {
+    fetch(`/get-random-question`, {
         method: "GET",
         headers: {
             'Content-Type': 'application/json',
