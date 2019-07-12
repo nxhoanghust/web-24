@@ -15,7 +15,7 @@ window.onload = function () {
                 var percentlike = Math.floor((data.like / total) * 100);
                 var percentdislike = 100 - percentlike;
             }
-            document.getElementById('total').innerHTML = total +" vote";
+            document.getElementById('total').innerHTML = total +"   vote";
             document.getElementById('question').innerHTML = data.questionContent;
             document.getElementById('textlike').innerHTML = percentlike + "%";
             document.getElementById('textdislike').innerHTML = percentdislike + "%";
