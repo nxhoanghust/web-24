@@ -4,6 +4,8 @@ const bodyParser = require('body-parser');
 const fs = require('fs');
 const mongoose = require('mongoose');
 const questionModel = require('./models/question.model');
+mongoose.set('useFindAndModify', false);
+
 
 mongoose.connect(
     'mongodb://localhost:27017/quyetde',
@@ -29,6 +31,13 @@ mongoose.connect(
                 res.sendFile(path.resolve(__dirname, './public/html/vote.html'));
             });
 
+            app.get(`/ask/:id`, (req, res) => {
+                res.sendFile(path.resolve(__dirname, './public/html/vote.html'));
+            });
+
+            app.get(`/find`, (req, res) => {
+                res.sendFile(path.resolve(__dirname, './public/html/find.html'));
+            });
 
             /*app.post(`/create-question`,(req,res)=>{
                 console.log(req.query);
@@ -38,7 +47,6 @@ mongoose.connect(
             app.post(`/create-question`, (req, res) => {
                 console.log(req.body);
                 questionModel.create({
-
                     questionContent: req.body.content,
                 }, (error, data) => {
                     if (error) {
@@ -145,7 +153,7 @@ mongoose.connect(
             });
 
 
-            app.get(`/ask/:id`, (req, res) => {
+            /*app.get(`/ask/:id`, (req, res) => {
                 questionModel.findById(req.params, (error, data) => {
                     if (error) {
                         res.status(500).json({
@@ -153,48 +161,69 @@ mongoose.connect(
                             message: error.message,
                         });
                     } else {
-                        
-                    }
-                });
-                /*fs.readFile('./data.json', { encoding: 'utf8' }, (error, data) => {
-                    if (error) {
-                        res.status(500).json({
-                            sucess: false,
-                            message: error.message,
-                        });
-                    } else {
-                        const questionList2 = JSON.parse(data);
-                        var i = 0;
-                        while (1) {
-                            if (req.params.id == questionList2[i].id) {
-                                break;
-                            }
-                            else i++;
-                        }
-                        fs.writeFile('./tmp.json', JSON.stringify(questionList2[i]), { encoding: 'utf8' }, (error) => {
-                            if (error) {
-                                res.status(500).json({
-                                    message: error.message,
-                                });
-                            }
-                        });
 
                     }
-
                 });*/
-                res.sendFile(path.resolve(__dirname, './public/html/vote.html'));
-            });
+            //mongo
+            /*fs.readFile('./data.json', { encoding: 'utf8' }, (error, data) => {
+                if (error) {
+                    res.status(500).json({
+                        sucess: false,
+                        message: error.message,
+                    });
+                } else {
+                    const questionList2 = JSON.parse(data);
+                    var i = 0;
+                    while (1) {
+                        if (req.params.id == questionList2[i].id) {
+                            break;
+                        }
+                        else i++;
+                    }
+                    fs.writeFile('./tmp.json', JSON.stringify(questionList2[i]), { encoding: 'utf8' }, (error) => {
+                        if (error) {
+                            res.status(500).json({
+                                message: error.message,
+                            });
+                        }
+                    });
 
-            app.get(`/datatmp`, (req, res) => {
-                fs.readFile('./tmp.json', (error, data) => {
-                    const aloha = JSON.parse(data);
-                    res.json(aloha);
-                });
-            });
+                }
+
+            });*/
+            /*     res.sendFile(path.resolve(__dirname, './public/html/vote.html'));
+             });
+ 
+             app.get(`/datatmp`, (req, res) => {
+                 fs.readFile('./tmp.json', (error, data) => {
+                     const aloha = JSON.parse(data);
+                     res.json(aloha);
+                 });
+             });*/
 
 
             app.get(`/get-random-question`, (req, res) => {
-                fs.readFile('./data.json', (error, data) => {
+                questionModel.countDocuments().exec(function (error, count) {
+                    var random = Math.floor(Math.random() * count);
+                    questionModel.findOne().skip(random).exec(function (error, data) {
+                        if (error) {
+                            res.status(500).json({
+                                sucess: false,
+                                message: error.message,
+                            });
+                        } else {
+                            res.status(200).json({
+                                sucess: true,
+                                data: data,
+                            });
+                        }
+                    });
+
+                });
+
+
+
+                /*fs.readFile('./data.json', { encoding: 'utf8' }, (error, data) => {
                     if (error) {
                         res.status(500).json({
                             sucess: false,
@@ -205,13 +234,31 @@ mongoose.connect(
                         const questionList = JSON.parse(data);
                         var random = Math.floor(Math.random() * questionList.length);
                         //console.log(questionList[random]);
-                        res.json(questionList[random]);
-                    }
-                });
+                        res.status(200).json({
+                            sucess: true,
+                            data: questionList[random],
+                        });
+                    }*/
             });
 
             app.get('/get-question-by-id/:id', (req, res) => {
-                fs.readFile('./data.json', { encoding: 'utf8' }, (error, data) => {
+                console.log(req.params.id);
+                questionModel.findById(req.params.id, (error, data) => {
+                    if (error) {
+                        res.status(500).json({
+                            sucess: false,
+                            message: error.message,
+                        });
+                    } else {
+                        res.status(200).json({
+                            sucess: true,
+                            data: data,
+                        });
+                    }
+                });
+
+
+                /*fs.readFile('./data.json', { encoding: 'utf8' }, (error, data) => {
                     if (error) {
                         res.status(500).json({
                             sucess: false,
@@ -227,14 +274,62 @@ mongoose.connect(
                             }
                         }
                         res.status(200).json({
-
-                        })
+                            sucess : true,
+                            data:  selectedQuestion,
+                        });
+             
                     }
-                })
+                })*/
             });
 
             app.put('/vote', (req, res) => {
-                fs.readFile('./data.json', { encoding: 'utf8' }, (error, data) => {
+                //console.log(req.body.id);
+                var updateVote = req.body.vote;
+                //console.log(updateVote);
+                var x;
+                var y;
+                questionModel.findById(req.body.id, (err, value) => {
+                    if (err) {
+                        res.status(500).json({
+                            sucess: false,
+                            message: error.message,
+                        });
+                    } else {
+                        if (updateVote === "like") {
+                            //value.like++;
+                            console.log(value._id);
+                            questionModel.findByIdAndUpdate(value._id, { $inc: { like:1, } }, (error1) => {
+                                if (error1) {
+                                    res.status(500).json({
+                                        sucess: false,
+                                        message: error.message,
+                                    });
+                                } else {
+                                    res.status(200).json({
+                                        sucess: true,
+                                    });
+                                }
+                            });
+                        } else {
+                            questionModel.findByIdAndUpdate(value._id, { $inc: { dislike:1, } }, (error1) => {
+                                if (error1) {
+                                    res.status(500).json({
+                                        sucess: false,
+                                        message: error.message,
+                                    });
+                                } else {
+                                    res.status(200).json({
+                                        sucess: true,
+                                    });
+                                }
+                            });
+
+                        }
+                    }
+                });
+
+
+                /*fs.readFile('./data.json', { encoding: 'utf8' }, (error, data) => {
                     if (error) {
                         res.status(500).json({
                             sucess: false,
@@ -245,22 +340,40 @@ mongoose.connect(
                         for (let i = 0; i < listQuestion.length; i++) {
                             listQuestion[i][req.body.vote] += 1;
                         }
+                        fs.writeFile('./data.json', JSON.stringify(listQuestion), { encoding: 'utf8' }, (err) => {
+                            if (err) {
+                                res.status(500).json({
+                                    sucess: false,
+                                    message: err.message,
+                                });
+                            } else {
+                                res.status(201).json({
+                                    sucess: true,
+                                });
+                            }
+                        });
                     }
-                    fs.writeFile('./data.json', JSON.stringify(questionList[i]), { encoding: 'utf8' }, (error) => {
-                        if (err) {
-                            res.status(500).json({
-                                sucess: false,
-                                message: error.message,
-                            });
-                        } else {
-                            res.status(201).json({
-                                sucess: true,
-                            });
-                        }
-                    });
-                });
+                });*/
             });
 
+            app.post(`/find-question`, (req, res) => {
+                var questionFind = req.body.content.toLowerCase();
+                //console.log(questionFind);
+                questionModel.find({ questionContent: questionFind, }, (error, data) => {
+                    if (error) {
+                        res.status(500).json({
+                            sucess: false,
+                            message: error.message,
+                        });
+                    } else {
+                        console.log(data);
+                        res.status(201).json({
+                            sucess: true,
+                            data: data,
+                        });
+                    }
+                });
+            });
             app.listen(3000);
         }
     }

@@ -22,7 +22,7 @@ body{
 
 #a{
     color: #dfe2e8;
-    width: 20%;
+    width: 15%;
     text-align: center;
     text-decoration: none;
     font-size: 26px;
@@ -73,14 +73,14 @@ body{
     color: white;
 }
 
-.True{
+.true{
     padding-top: 8px;
     background-color: #1d6ec4;
     border-color: #0e2c4d;
 
 }
 
-.False{
+.false{
     padding-top: 8px;
     background-color: #f01818;
     border-color: #6e0c14;
@@ -102,11 +102,11 @@ body{
     transform: rotate(180deg);
 }
 
-.True:hover{
+.true:hover{
     background-color: #116efa;
 }
 
-.False:hover{
+.false:hover{
     background-color: #ff1212;
 }
 

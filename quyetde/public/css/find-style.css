@@ -73,19 +73,17 @@ body{
 }
 
 
-
-
 h1{
     padding: 10vh;
     height: 30vh;
     font-size: 50px;
-    text-align: center;
+    margin-left: 30px;
 }
 
 #myInput{
     margin-left: 7%;
-    height: 18vh;
-    width: 80%;
+    height: 20vh;
+    width: 65%;
 }
 #demo{
     margin-left: 7%;
@@ -121,4 +119,8 @@ h1{
     color:#242323;
     background-color: hsl(60, 1%, 82%);
     border-style:  solid double;
+}
+
+.found{ 
+    padding-left: 75px;        
 }
