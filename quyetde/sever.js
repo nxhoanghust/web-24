@@ -359,7 +359,7 @@ mongoose.connect(
             app.post(`/find-question`, (req, res) => {
                 var questionFind = req.body.content.toLowerCase();
                 //console.log(questionFind);
-                questionModel.find({ questionContent: questionFind, }, (error, data) => {
+                questionModel.find({ questionContent: {$regex: questionFind} }, (error, data) => {
                     if (error) {
                         res.status(500).json({
                             sucess: false,
