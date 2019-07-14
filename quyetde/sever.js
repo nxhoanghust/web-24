@@ -298,7 +298,7 @@ mongoose.connect(
                         if (updateVote === "like") {
                             //value.like++;
                             console.log(value._id);
-                            questionModel.findByIdAndUpdate(value._id, { $inc: { like:1, } }, (error1) => {
+                            questionModel.findByIdAndUpdate(value._id, { $inc: { like: 1, } }, (error1) => {
                                 if (error1) {
                                     res.status(500).json({
                                         sucess: false,
@@ -311,7 +311,7 @@ mongoose.connect(
                                 }
                             });
                         } else {
-                            questionModel.findByIdAndUpdate(value._id, { $inc: { dislike:1, } }, (error1) => {
+                            questionModel.findByIdAndUpdate(value._id, { $inc: { dislike: 1, } }, (error1) => {
                                 if (error1) {
                                     res.status(500).json({
                                         sucess: false,
@@ -356,10 +356,14 @@ mongoose.connect(
                 });*/
             });
 
+            /*function escapeRegex(text) {
+                return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
+            };*/
+
             app.post(`/find-question`, (req, res) => {
-                var questionFind = req.body.content.toLowerCase();
+                const search = new RegExp((req.body.content), 'gim');
                 //console.log(questionFind);
-                questionModel.find({ questionContent: {$regex: questionFind} }, (error, data) => {
+                questionModel.find({ questionContent: { $regex: search } }, (error, data) => {
                     if (error) {
                         res.status(500).json({
                             sucess: false,
