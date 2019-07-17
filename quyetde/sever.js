@@ -20,11 +20,11 @@ mongoose.connect(
             app.use(express.static('public'));
             app.use(bodyParser.json());
             app.get('/', (req, res) => {
-                res.sendFile(path.resolve(__dirname, './public/html/index.html'));
+                res.sendFile(path.resolve(__dirname, './public/html/home-bt4.html'));
             });
 
             app.get('/ask', (req, res) => {
-                res.sendFile(path.resolve(__dirname, './public/html/index1.html'));
+                res.sendFile(path.resolve(__dirname, './public/html/ask-bt4.html'));
             });
 
             app.get('/vote', (req, res) => {
@@ -32,11 +32,11 @@ mongoose.connect(
             });
 
             app.get(`/ask/:id`, (req, res) => {
-                res.sendFile(path.resolve(__dirname, './public/html/vote.html'));
+                res.sendFile(path.resolve(__dirname, './public/html/vote-bt4.html'));
             });
 
             app.get(`/find`, (req, res) => {
-                res.sendFile(path.resolve(__dirname, './public/html/find.html'));
+                res.sendFile(path.resolve(__dirname, './public/html/find-bt4.html'));
             });
 
             /*app.post(`/create-question`,(req,res)=>{

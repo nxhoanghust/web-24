@@ -43,7 +43,7 @@ window.onload = function () {
                         } else {
                             for (let i = 0; i < data.data.length; i++) {
                                 document.querySelector('#delete').insertAdjacentHTML('afterbegin',
-                                    '<div class="found" id="question"></div>   <div class="found" id="like"></div> <div class="found" id="dislike"></div> <div class="found" id="createat"></div>');
+                                    '<div class="found" id="question"></div>   <div class="found" id="like"></div> <div class="found" id="dislike"></div> <div class="found" id="createat"></div> <div>-------------------------------</div>');
                                 document.querySelector("#question").innerHTML = "Question: " + data.data[i].questionContent;
                                 document.querySelector('#like').innerHTML = "Like: " + data.data[i].like;
                                 document.querySelector('#dislike').innerHTML = "Dislike: " + data.data[i].dislike;

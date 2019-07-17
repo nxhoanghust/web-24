@@ -1,0 +1,56 @@
+.navbar{
+    color: white;
+}
+
+.center{
+    margin-top: 10%;
+    margin-left: 42%;
+}
+.h1{
+    text-align: center;    
+}
+.question{
+    margin-top: 10%;
+}
+
+.like{
+    width: 180px;
+    margin-left: 40%;
+}
+.dislike{
+    width: 180px;
+    margin-left: 40%;
+}
+
+.button{
+    margin-top: 5%;
+}
+
+#pic-up{
+    margin-top: 2px;
+    margin-right: 5px;
+    width: 28px;
+    height: 23px;
+    color: #dfe2e8;
+}
+#pic-down{
+    padding-top: 0px;
+    margin-top: 2px;
+    margin-right: 7px;
+    width: 28px;
+    height: 23px;
+    transform: rotate(180deg);
+}
+.active{
+    background-color:#292929;
+    border-radius: 4px;
+}
+@media (max-width: 786px){
+    .center{
+        margin-left:20%;
+    }
+    .container{
+        padding-left: 0px;
+        padding-right: 110px;
+    }
+}

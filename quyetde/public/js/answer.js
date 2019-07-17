@@ -11,7 +11,7 @@ window.onload = () => {
             console.log(data);
             selectedQuestion = data.data;
             console.log(selectedQuestion._id);
-            document.querySelector('#cauhoi').innerHTML = selectedQuestion.questionContent;
+            document.querySelector('.question').innerHTML = selectedQuestion.questionContent;
         })
         .catch((error) => {
             console.log(error);
@@ -39,10 +39,16 @@ window.onload = () => {
                 window.alert(error.message);
             });
     };
-    document.querySelector(".true").addEventListener('click', () => {
+    document.querySelector(".like").addEventListener('click', () => {
         voteQuestion("like");
     });
-    document.querySelector(".false").addEventListener('click', () => {
+    document.querySelector(".dislike").addEventListener('click', () => {
         voteQuestion("dislike");
+    });
+    document.querySelector('.another').addEventListener('click', () => {
+        window.location.href = './';
+    });
+    document.querySelector('.vote').addEventListener('click', () => {
+        window.location.href = `/ask/${selectedQuestion._id}`
     });
 }

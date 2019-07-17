@@ -1,15 +1,100 @@
+body{
+    background-color: #dfe1e6;
+}
 .heading{
     margin-top: 20px;
     text-align: center;
     margin-bottom: 20px;
 }
+.row{
+    margin-bottom: 30px;
+}
+
 
 .column{
     margin-right: 15px;
 }
 
 .carol{
-    width: 70%;
-    height: 70%;
+    width: 96%;
 }
 
+.bg{
+    background-color: white;
+}
+
+
+.solid{
+    font-weight: bold;
+}
+ .card{
+     width: 18rem;
+ }
+
+@media only screen and (min-width: 992px){
+    .container{
+        margin-top: 10px;
+    }
+    .carol{
+        padding-left: 20px;
+        width: 96%;
+
+    }
+}
+
+
+.picture{
+    margin-top: 20px;
+    margin-left: 25px;
+}
+.card-img-top{
+    height: 200px;
+}
+
+@media only screen and (max-width: 768px){
+    .total{
+        margin-left: 5px;
+        margin-right: 5px;
+    }
+    .card{
+        width: 17rem;
+    }
+    
+    .col-s-12{
+        width: 50%;
+    }
+}
+
+
+
+@media (max-width: 768px){
+.container {
+    max-width: 637px;
+}
+.total{
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.picture{
+    margin-top: 20px;
+    margin-left: 0px;
+}
+}
+
+@media (max-width: 576px){
+    .col-s-12{
+        width: 100%;
+    }
+    .total{
+        margin-left: 5px;
+        margin-right: 30px;
+    }
+    .card{
+        margin-left: auto;
+        margin-right: auto; 
+    }
+}
+
+.card{
+    margin-top: 20px;
+}

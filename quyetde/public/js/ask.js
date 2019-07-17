@@ -26,7 +26,7 @@ window.onload = function () {
 
     //url param
     //url query
-    var submit = document.getElementById('submit');
+    var submit = document.getElementById('submit1');
     submit.addEventListener('click', (event) => {
         const questionContent = input.value;
         var x = input.value.length;
