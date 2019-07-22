@@ -27,7 +27,7 @@ mongoose.connect(
                 res.sendFile(path.resolve(__dirname, './public/html/index.html'));
             });
 
-            app.get('/games/:id',(req,res)=>{
+            app.get('/games/:id', (req, res) => {
                 res.sendFile(path.resolve(__dirname, './public/html/index2.html'));
             });
             app.post('/create-new-game', (req, res) => {
@@ -55,8 +55,39 @@ mongoose.connect(
                     }
                 });
             });
-            app.post('/games/:id',(req,res)=>{
-                
+            app.post('/update/', (req, res) => {
+                var score = req.body.score;
+                console.log(score);
+                console.log(req.body.id);
+                ParentModel.findOneAndUpdate({ _id: req.body.id }, { score: score }, (error, data) => {
+                    if (error) {
+                        res.json({
+                            success: false,
+                            message: error.message,
+                        });
+                    }
+                    else {
+                        res.status(201).json({
+                            success: true,
+                        });
+                    }
+                });
+            });
+            app.post('/find-game', (req, res) => {
+                ParentModel.findById(req.body.id, (error, data) => {
+                    console.log(data);
+                    if (error) {
+                        res.json({
+                            success: false,
+                            message: error.message,
+                        });
+                    } else {
+                        res.status(201).json({
+                            sucess: true,
+                            score: data,
+                        });
+                    }
+                });
             });
             app.listen(8080);
         }
