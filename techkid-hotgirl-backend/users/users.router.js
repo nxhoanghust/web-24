@@ -8,6 +8,8 @@ const emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\
 
 userRouter.get('/test', (req, res) => {
     console.log('Current User:', req.session.currentUser);
+    //console.log(req.session.id);
+    //console.log(req.session.cookie);
     res.json({
         success: true,
     });
@@ -97,6 +99,8 @@ userRouter.post('/login', (req, res) => {
                     email: data.email,
                     fullName: data.fullName,
                 };
+                //console.log(req.session.id);
+                //console.log('Current User:', req.session.currentUser);
                 res.status(201).json({
                     success: true,
                     message: 'Login successful',
@@ -104,7 +108,7 @@ userRouter.post('/login', (req, res) => {
             } else {
                 res.status(400).json({
                     success: false,
-                    message: 'wrong password',
+                    message: 'Password incorrect',
                 });
             }
         }
