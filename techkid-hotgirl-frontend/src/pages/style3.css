@@ -1,0 +1,17 @@
+.btn{
+    width: 100px;
+    margin:2%;
+}
+
+.card-body{
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 10px;
+    border-color: #7a7a76;
+}
+.collapse{
+    margin-left: 2%;
+}
+.collapsing{
+    margin-left: 2%;
+}

@@ -11,7 +11,8 @@ function App() {
     <BrowserRouter>
       <Route path='/register' exact={true} component={registerPage}/>
       <Route path='/signIn' exact={true} component={signInPage}/>
-      <Route path='/' exact={true} component={homePage}/>      
+      <Route path='/' exact={true} component={homePage}/>    
+      <Route path='/profile' exact={true} component={homePage}/>        
     </BrowserRouter>
   );
 }

@@ -63,8 +63,9 @@ class registerPage extends React.Component {
           </div>`
             );
             setTimeout(() => {
+              this.props.history.push(`/signin`);
               //window.location.href = "http://localhost:3000/signin";
-            }, 1000);
+            }, 1500);
           }
         })
         .catch(error => {

@@ -2,6 +2,24 @@ import React from "react";
 import "./style2.css";
 
 class signInPage extends React.Component {
+  componentDidMount() {
+    fetch("http://localhost:3001/users/test/", {
+      credentials: "include",
+      method: "GET"
+    })
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        if (data.success == true) {
+          this.props.history.push(`/profile`);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+        window.alert(error.message);
+      });
+  }
   validate() {
     var noti = document.querySelector(".noti");
     while (noti.firstChild) noti.removeChild(noti.firstChild);
@@ -23,10 +41,10 @@ class signInPage extends React.Component {
       );
     } else {
       fetch("http://localhost:3001/users/login", {
+        credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json",
-          credentials: "include",
+          "Content-Type": "application/json"
         },
         body: JSON.stringify({
           email: email1,
@@ -55,7 +73,7 @@ class signInPage extends React.Component {
             //console.log(this.props.history);
             setTimeout(() => {
               //this.props.history.;
-              this.props.history.push(`/`);
+              this.props.history.push(`/profile`);
               //window.location.href ="http://localhost:3000";
             }, 1000);
           }
