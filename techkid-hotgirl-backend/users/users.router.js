@@ -1,6 +1,7 @@
 const express = require("express");
 const UserModel = require("./users.model");
 const bcryptjs = require("bcryptjs");
+const { OAuth2Client } = require("google-auth-library");
 
 const userRouter = express.Router();
 const emailRegex = /^(([^<>()\[\]\.,;:\s@\"]+(\.[^<>()\[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -15,10 +16,10 @@ userRouter.get("/test", (req, res) => {
       success: false
     });
   } else {
-  res.json({
-    success: true,
-    data: profile
-  });
+    res.json({
+      success: true,
+      data: profile
+    });
   }
 });
 userRouter.post("/register", (req, res) => {
@@ -86,43 +87,79 @@ userRouter.post("/register", (req, res) => {
 });
 
 userRouter.post("/login", (req, res) => {
+  const CLIENT_ID =
+    "992650410090-m4eo9ap8k0vkm3r4m0mefj3sfdt2jo35.apps.googleusercontent.com";
   //get email+pass from req.boy
-  const { email, password } = req.body;
-  //check email
-  UserModel.findOne({ email: email }, (error, data) => {
-    if (error) {
-      res.status(400).json({
-        success: false,
-        message: error.message
+  if (req.body.token) {
+    console.log(req.body);
+    const client = new OAuth2Client(CLIENT_ID);
+    async function verify() {
+      const ticket = await client.verifyIdToken({
+        idToken: req.body.token,
+        audience: CLIENT_ID // Specify the CLIENT_ID of the app that accesses the backend
+        // Or, if multiple clients access the backend:
+        //[CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3]
       });
-    } else if (!data) {
-      res.status(400).json({
-        success: false,
-        message: "Email does not exist"
+      const payload = ticket.getPayload();
+      const userid = payload["sub"];
+      //console.log(userid);
+      console.log(payload);
+      //console.log(payload.name);
+      //console.log(payload.email);
+      // If request specified a G Suite domain:
+      //const domain = payload['hd'];
+      req.session.currentUser = {
+        img: payload.picture,
+        _id: userid,
+        email: payload.email,
+        fullName: payload.name
+      };
+      console.log(req.session.currentUser);
+      res.status(201).json({
+        success: true,
+        message: "Login successful"
       });
-    } else {
-      //compare passw
-      if (bcryptjs.compareSync(password, data.password)) {
-        //save info to session
-        req.session.currentUser = {
-          _id: data._id,
-          email: data.email,
-          fullName: data.fullName
-        };
-        //console.log(req.session.id);
-        //console.log('Current User:', req.session.currentUser);
-        res.status(201).json({
-          success: true,
-          message: "Login successful"
-        });
-      } else {
+    }
+    verify().catch(console.error);
+  } else {
+    console.log(req.body);
+    const { email, password } = req.body;
+    //check email
+    UserModel.findOne({ email: email }, (error, data) => {
+      if (error) {
         res.status(400).json({
           success: false,
-          message: "Password incorrect"
+          message: error.message
         });
+      } else if (!data) {
+        res.status(400).json({
+          success: false,
+          message: "Email does not exist"
+        });
+      } else {
+        //compare passw
+        if (bcryptjs.compareSync(password, data.password)) {
+          //save info to session
+          req.session.currentUser = {
+            _id: data._id,
+            email: data.email,
+            fullName: data.fullName
+          };
+          //console.log(req.session.id);
+          //console.log('Current User:', req.session.currentUser);
+          res.status(201).json({
+            success: true,
+            message: "Login successful"
+          });
+        } else {
+          res.status(400).json({
+            success: false,
+            message: "Password incorrect"
+          });
+        }
       }
-    }
-  });
+    });
+  }
 });
 
 userRouter.get("/logout", (req, res) => {

@@ -1,5 +1,7 @@
 import React from "react";
 import "./style2.css";
+import GoogleLogin from "react-google-login";
+import FacebookLogin from "react-facebook-login";
 
 class signInPage extends React.Component {
   componentDidMount() {
@@ -88,6 +90,43 @@ class signInPage extends React.Component {
     var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
     return re.test(String(email).toLowerCase());
   }
+  responseGoogle = response => {
+    console.log(response);
+    if (response.error) {
+      console.log(response.error);
+      window.alert(response.error);
+    } else {
+      fetch("http://localhost:3001/users/login", {
+        credentials: "include",
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          token: response.tokenId
+        })
+      })
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          document.querySelector(".noti").insertAdjacentHTML(
+            "beforeend",
+            `<div classNameName="alert alert-danger" role="alert">
+        ${data.message}!
+    </div>`
+          );
+          //this.props.history.;
+          this.props.history.push(`/profile`);
+          //window.location.href ="http://localhost:3000";
+        })
+        .catch(error => {
+          console.log(error);
+          window.alert(error.message);
+        });
+    }
+  };
+
   render() {
     return (
       <div className="form-body">
@@ -149,7 +188,18 @@ class signInPage extends React.Component {
                 <div className="noti" />
                 <div className="other-links">
                   <span>Or login with</span>
-                  <a href="/signin">Facebook</a>
+                  {/*
+                  <GoogleLogin
+                    className="google"
+                    clientId="992650410090-m4eo9ap8k0vkm3r4m0mefj3sfdt2jo35.apps.googleusercontent.com"
+                    buttonText="Login"
+                    onSuccess={this.responseGoogle}
+                    onFailure={this.responseGoogle}
+                    cookiePolicy={"single_host_origin"}
+                  >
+                    Google
+                  </GoogleLogin>*/}
+                  ,<a href="/signin">Facebook</a>
                   <a href="/signin">Google</a>
                   <a href="/signin">Linkedin</a>
                 </div>
