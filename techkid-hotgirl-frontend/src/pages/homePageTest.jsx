@@ -2,7 +2,8 @@ import React from "react";
 import "./style4.css";
 
 class homePageTest extends React.Component {
-  componentDidMount() {
+  /*componentDidMount() {
+    
     fetch("http://localhost:3001/users/test/", {
       credentials: "include",
       method: "GET"
@@ -17,11 +18,7 @@ class homePageTest extends React.Component {
           //window.location.href = "/signin";
         } else {
           console.log(data);
-          /*document.querySelector(".profile").insertAdjacentHTML(
-                "beforeend",
-                `<div>Name: ${data.data.fullName}</div>
-                <div>Email: ${data.data.email}</div>`
-              );*/
+              
           document.querySelector(".fullName").innerHTML = `FullName: ${
             data.data.fullName
           }`;
@@ -45,6 +42,36 @@ class homePageTest extends React.Component {
         console.log(error);
         window.alert(error.message);
       });
+
+  }*/
+  state = {
+    currentUser: {
+      email: '',
+      fullName: '',
+    }
+  }
+  componentDidMount() {
+    const email = window.localStorage.getItem('email');
+    const fullName = window.localStorage.getItem('fullName');
+    if (email && fullName) {
+      this.setState({
+        currentUser: {
+          email: email,
+          fullName: fullName,
+        }
+      });
+      document.querySelector(".fullName").innerHTML = `FullName: ${
+        fullName
+      }`;
+      document.querySelector(".fullName1").innerHTML = `${
+        fullName
+      }  `;
+      document.querySelector(".email").innerHTML = `Email: ${
+        email
+      }`;
+    } else {
+      window.location.href = '/signin';
+    }
   }
   logout() {
     fetch("http://localhost:3001/users/logout", {
@@ -55,6 +82,8 @@ class homePageTest extends React.Component {
         return res.json();
       })
       .then(data => {
+        window.localStorage.removeItem('email');
+        window.localStorage.removeItem('fullName');
         console.log(data);
         window.location.href = "/";
       })

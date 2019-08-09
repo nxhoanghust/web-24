@@ -3,7 +3,8 @@ const bodyParser = require("body-Parser");
 const mongoose = require("mongoose");
 const userRouter = require("./users/users.router");
 const session = require("express-session");
-//const cors = require("cors");
+const cors = require("cors");
+const postRouter = require('./posts/posts.router');
 mongoose.connect("mongodb://localhost:27017/techkid-hotgirl", error => {
   if (error) {
     console.log(error);
@@ -13,7 +14,7 @@ mongoose.connect("mongodb://localhost:27017/techkid-hotgirl", error => {
     const app = express();
 
     //use middleware
-    app.use(function(req, res, next) {
+    /*app.use(function(req, res, next) {
       res.header("Access-Control-Allow-Origin", "http://localhost:3000");
       res.header("Access-Control-Allow-Credentials", "true");
       res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT");
@@ -22,7 +23,7 @@ mongoose.connect("mongodb://localhost:27017/techkid-hotgirl", error => {
         "Origin, X-Requested-With, Content-Type, Accept, Authorization"
       );
       next();
-    });
+    });*/
     /*res.set({
         "Access-Control-Allow-Origin": "http://localhost:3000",
         "Access-Control-Allow-Credentials": "true",
@@ -30,12 +31,13 @@ mongoose.connect("mongodb://localhost:27017/techkid-hotgirl", error => {
           "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers,Authorization"
       });*/
 
-    /*app.use(
+    app.use(
       cors({
-        origin: "http://localhost:3000"
+        origin: "http://localhost:3000",
+        credentials: true,
       })
     );
-    app.options("*", cors());*/
+    app.options("*", cors());
     app.use(bodyParser.json());
     app.use(
       session({
@@ -44,6 +46,8 @@ mongoose.connect("mongodb://localhost:27017/techkid-hotgirl", error => {
     );
     //router
     app.use("/users", userRouter);
+    app.use("/posts", postRouter);
+
 
     // start sv
     app.listen(3001, error => {

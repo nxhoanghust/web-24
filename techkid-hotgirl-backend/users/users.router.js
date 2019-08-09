@@ -117,7 +117,8 @@ userRouter.post("/login", (req, res) => {
       console.log(req.session.currentUser);
       res.status(201).json({
         success: true,
-        message: "Login successful"
+        message: "Login successful",
+        data: req.session.currentUser
       });
     }
     verify().catch(console.error);
@@ -149,7 +150,9 @@ userRouter.post("/login", (req, res) => {
           //console.log('Current User:', req.session.currentUser);
           res.status(201).json({
             success: true,
-            message: "Login successful"
+            message: "Login successful",
+            data: req.session.currentUser
+
           });
         } else {
           res.status(400).json({

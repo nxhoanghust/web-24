@@ -4,7 +4,7 @@ import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login";
 
 class signInPage extends React.Component {
-  componentDidMount() {
+  /*componentDidMount() {
     fetch("http://localhost:3001/users/test/", {
       credentials: "include",
       method: "GET"
@@ -13,7 +13,10 @@ class signInPage extends React.Component {
         return res.json();
       })
       .then(data => {
+        console.log(data);
         if (data.success == true) {
+          // save to local storage
+          //redirect
           this.props.history.push(`/profile`);
         }
       })
@@ -21,7 +24,7 @@ class signInPage extends React.Component {
         console.log(error);
         window.alert(error.message);
       });
-  }
+  }*/
   validate() {
     var noti = document.querySelector(".noti");
     while (noti.firstChild) noti.removeChild(noti.firstChild);
@@ -66,6 +69,8 @@ class signInPage extends React.Component {
         </div>`
             );
           } else {
+            window.localStorage.setItem('email', data.data.email);
+            window.localStorage.setItem('fullName', data.data.fullName);
             document.querySelector(".noti").insertAdjacentHTML(
               "beforeend",
               `<div classNameName="alert alert-success" role="alert">
@@ -75,6 +80,7 @@ class signInPage extends React.Component {
             //console.log(this.props.history);
             setTimeout(() => {
               //this.props.history.;
+
               this.props.history.push(`/profile`);
               //window.location.href ="http://localhost:3000";
             }, 1000);
@@ -188,7 +194,7 @@ class signInPage extends React.Component {
                 <div className="noti" />
                 <div className="other-links">
                   <span>Or login with</span>
-                  {/*
+
                   <GoogleLogin
                     className="google"
                     clientId="992650410090-m4eo9ap8k0vkm3r4m0mefj3sfdt2jo35.apps.googleusercontent.com"
@@ -198,7 +204,7 @@ class signInPage extends React.Component {
                     cookiePolicy={"single_host_origin"}
                   >
                     Google
-                  </GoogleLogin>*/}
+                  </GoogleLogin>
                   ,<a href="/signin">Facebook</a>
                   <a href="/signin">Google</a>
                   <a href="/signin">Linkedin</a>
