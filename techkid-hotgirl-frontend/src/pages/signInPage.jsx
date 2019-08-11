@@ -4,6 +4,10 @@ import GoogleLogin from "react-google-login";
 import FacebookLogin from "react-facebook-login";
 
 class signInPage extends React.Component {
+  state = {
+    email: "",
+    password: ""
+  };
   /*componentDidMount() {
     fetch("http://localhost:3001/users/test/", {
       credentials: "include",
@@ -25,6 +29,13 @@ class signInPage extends React.Component {
         window.alert(error.message);
       });
   }*/
+  componentWillMount() {
+    const email = window.localStorage.getItem("email");
+    const fullName = window.localStorage.getItem("fullName");
+    if (email && fullName) {
+      window.location.href = "/";
+    }
+  }
   validate() {
     var noti = document.querySelector(".noti");
     while (noti.firstChild) noti.removeChild(noti.firstChild);
@@ -69,8 +80,9 @@ class signInPage extends React.Component {
         </div>`
             );
           } else {
-            window.localStorage.setItem('email', data.data.email);
-            window.localStorage.setItem('fullName', data.data.fullName);
+            window.localStorage.setItem("email", data.data.email);
+            window.localStorage.setItem("fullName", data.data.fullName);
+            window.localStorage.setItem("id", data.data._id);
             document.querySelector(".noti").insertAdjacentHTML(
               "beforeend",
               `<div classNameName="alert alert-success" role="alert">
@@ -194,7 +206,6 @@ class signInPage extends React.Component {
                 <div className="noti" />
                 <div className="other-links">
                   <span>Or login with</span>
-
                   <GoogleLogin
                     className="google"
                     clientId="992650410090-m4eo9ap8k0vkm3r4m0mefj3sfdt2jo35.apps.googleusercontent.com"
