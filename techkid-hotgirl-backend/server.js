@@ -4,7 +4,9 @@ const mongoose = require("mongoose");
 const userRouter = require("./users/users.router");
 const session = require("express-session");
 const cors = require("cors");
-const postRouter = require('./posts/posts.router');
+const postRouter = require("./posts/posts.router");
+const uploadRouter = require("./upload/upload.router");
+
 mongoose.connect("mongodb://localhost:27017/techkid-hotgirl", error => {
   if (error) {
     console.log(error);
@@ -34,7 +36,7 @@ mongoose.connect("mongodb://localhost:27017/techkid-hotgirl", error => {
     app.use(
       cors({
         origin: "http://localhost:3000",
-        credentials: true,
+        credentials: true
       })
     );
     app.options("*", cors());
@@ -44,10 +46,12 @@ mongoose.connect("mongodb://localhost:27017/techkid-hotgirl", error => {
         secret: "keyboard cat"
       })
     );
+
+    app.use(express.static("public"));
     //router
     app.use("/users", userRouter);
     app.use("/posts", postRouter);
-
+    app.use("/upload", uploadRouter);
 
     // start sv
     app.listen(3001, error => {

@@ -49,6 +49,8 @@ class homePageTest extends React.Component {
       email: "",
       fullName: ""
     },
+    imageSrc: "",
+    imgFile: undefined,
     errMessage: ""
   };
   componentDidMount() {
@@ -69,7 +71,7 @@ class homePageTest extends React.Component {
       document.querySelector(".fullName").innerHTML = `FullName: ${fullName}`;
       document.querySelector(".fullName1").innerHTML = `${fullName}  `;
       document.querySelector(".email").innerHTML = `Email: ${email}`;
-      fetch("http://localhost:3001/posts/get", { method: "GET" })
+      /*fetch("http://localhost:3001/posts/get", { method: "GET" })
         .then(res => {
           return res.json();
         })
@@ -91,7 +93,7 @@ class homePageTest extends React.Component {
             data.data[i].imageUrl
           }"  style="height:200px"/>
           <div class="card-body">
-            <h5 class="card-title">${data.data[i].author.fullName}</h5>
+            <h5 class="card-title" >${data.data[i].author.fullName}</h5>
             <p class="card-text content-text" maxlength="200"  style="height:200px">${newstr}</p>
           </div>
           <div class="card-footer">
@@ -137,11 +139,15 @@ class homePageTest extends React.Component {
           window.alert(error.message);
         });
       // end test
+      */
     } else {
       window.location.href = "/signin";
     }
   }
 
+  upperCase(string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
   logout() {
     fetch("http://localhost:3001/users/logout", {
       credentials: "include",
@@ -163,48 +169,64 @@ class homePageTest extends React.Component {
       });
   }
   createNewPost = () => {
-    const imageUrl = document.querySelector(".image").value;
-    const content = document.querySelector(".content").value;
-    //console.log(this.state);
-    var myNode = document.querySelector(".noti");
-    while (myNode.firstChild) {
-      myNode.removeChild(myNode.firstChild);
-    }
-    if (!this.validateUrl(imageUrl)) {
-      myNode.insertAdjacentHTML(
-        "afterbegin",
-        `<div class="alert alert-danger" role="alert">
-        Wrong Image Url!!
-       </div>`
-      );
+    //uploadimg
+
+    if (!this.state.imgFile) {
+      this.setState({
+        errMessage: "Please input all"
+      });
     } else {
-      fetch("http://localhost:3001/posts/create", {
+      const formData = new FormData();
+      formData.append("image", this.state.imgFile);
+      fetch("http://localhost:3001/upload/image", {
         credentials: "include",
         method: "POST",
         headers: {
-          "Content-Type": "application/json"
+          Accept: "application/json"
+          //"Content-Type": "multipart/form-data"
         },
-        body: JSON.stringify({
-          currentUser: this.state.currentUser,
-          content: content,
-          imageUrl: imageUrl
-        })
+        body: formData
       })
         .then(res => {
           return res.json();
         })
         .then(data => {
           console.log(data);
-          window.location.href = "/";
         })
         .catch(error => {
-          console.log(error);
-          window.alert(error.message);
+          this.setState({
+            errMessage: error.message
+          });
         });
     }
   };
-  handleView = () => {
-    console.log("true");
+  handleInputChange = event => {
+    const imageFile = event.target.files[0];
+    console.log(imageFile);
+    if (!imageFile) {
+      this.setState({
+        errMessage: "Please choose file a picture"
+      });
+    }
+    if (imageFile.size > 2000000) {
+      this.setState({
+        errMessage: "Please choose file with size <2MB"
+      });
+    } else if (!imageFile.name.match(/gif|png|jpg/)) {
+      this.setState({
+        errMessage: "Not recorgnize the type"
+      });
+    } else {
+      const fileReader = new FileReader();
+      fileReader.readAsDataURL(imageFile);
+      fileReader.onloadend = data => {
+        this.setState({
+          imageSrc: data.target.result,
+          imgFile: imageFile
+        });
+      };
+    }
+    //validate image:size+
   };
   validateUrl(url) {
     var expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
@@ -215,6 +237,7 @@ class homePageTest extends React.Component {
     }
   }
   render() {
+    //  nsole.log(this.state);
     return (
       <div>
         <nav className="navbar navbar-light bg-light">
@@ -309,6 +332,32 @@ class homePageTest extends React.Component {
                     </div>
                   </fieldset>
                   <div className="form-group">
+                    <div className="input-group mb-3">
+                      <div className="custom-file">
+                        <input
+                          type="file"
+                          className="custom-file-input"
+                          id="inputGroupFile01"
+                          onChange={this.handleInputChange}
+                        />
+                        <label
+                          className="custom-file-label"
+                          htmlFor="inputGroupFile01"
+                        >
+                          Select file to upload...
+                        </label>
+                      </div>
+                    </div>
+                    {this.state.imageSrc ? (
+                      <div>
+                        <img
+                          src={this.state.imageSrc}
+                          alt="preview"
+                          style={{ width: "200px" }}
+                        />
+                      </div>
+                    ) : null}
+
                     <label htmlFor="exampleFormControlTextarea1">
                       Content:
                     </label>
@@ -321,18 +370,13 @@ class homePageTest extends React.Component {
                       required
                     />
                   </div>
-                  <div className="form-group">
-                    <label htmlFor="formGroupExampleInput">Image Url:</label>
-                    <input
-                      type="text"
-                      className="form-control image"
-                      id="formGroupExampleInput"
-                      placeholder="Url"
-                      required
-                    />
-                  </div>
                 </form>
               </div>
+              {this.state.errMessage ? (
+                <div class="alert alert-danger" role="alert">
+                  {this.state.errMessage}
+                </div>
+              ) : null}
               <div className="noti container" />
               <div className="modal-footer">
                 <button
@@ -349,40 +393,6 @@ class homePageTest extends React.Component {
             </div>
           </div>
         </div>
-        <nav
-          aria-label="Page navigation example"
-          className="navigation container"
-        >
-          <ul className="pagination">
-            <li className="page-item">
-              <a className="page-link" href="#" aria-label="Previous">
-                <span aria-hidden="true">&laquo;</span>
-                <span className="sr-only">Previous</span>
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                1
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                2
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#">
-                3
-              </a>
-            </li>
-            <li className="page-item">
-              <a className="page-link" href="#" aria-label="Next">
-                <span aria-hidden="true">&raquo;</span>
-                <span className="sr-only">Next</span>
-              </a>
-            </li>
-          </ul>
-        </nav>
       </div>
     );
   }

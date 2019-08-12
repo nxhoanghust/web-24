@@ -39,9 +39,7 @@ postRouter.get("/get", (req, res) => {
       }
     });
 });
-postRouter.post("/update", (req, res) => {
-  postModel.findById(req.body._id, { view: req.body.view });
-});
+
 postRouter.post("/create", (req, res) => {
   //check user login
   req.session.currentUser = {
