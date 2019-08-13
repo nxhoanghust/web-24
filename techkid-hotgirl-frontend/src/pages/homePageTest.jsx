@@ -47,11 +47,13 @@ class homePageTest extends React.Component {
   state = {
     currentUser: {
       email: "",
-      fullName: ""
+      fullName: "",
+      _id: ""
     },
     imageSrc: "",
     imgFile: undefined,
-    errMessage: ""
+    errMessage: "",
+    postImg: []
   };
   componentDidMount() {
     const email = window.localStorage.getItem("email");
@@ -68,10 +70,9 @@ class homePageTest extends React.Component {
       });
 
       // test hw
-      document.querySelector(".fullName").innerHTML = `FullName: ${fullName}`;
       document.querySelector(".fullName1").innerHTML = `${fullName}  `;
       document.querySelector(".email").innerHTML = `Email: ${email}`;
-      /*fetch("http://localhost:3001/posts/get", { method: "GET" })
+      fetch("http://localhost:3001/posts/get", { method: "GET" })
         .then(res => {
           return res.json();
         })
@@ -83,15 +84,15 @@ class homePageTest extends React.Component {
             } else {
               newstr = data.data[i].content;
             }
+            console.log(data.data[i].imageUrl);
             document.querySelector(".postScreen").insertAdjacentHTML(
               "afterbegin",
-              `<a class="card bg-light mb-3 border-light"
-              onClick={this.handleView;} style="width: 18rem;"
+              `<a class="card bg-light mb-3 border-light" style="width: 18rem;"
                data-toggle="modal" data-target="#exampleModalLong${i}"
                >
-          <img class="card-img-top" src="${
+          <img class="card-img-top" src=${
             data.data[i].imageUrl
-          }"  style="height:200px"/>
+          }  style="height:200px" />
           <div class="card-body">
             <h5 class="card-title" >${data.data[i].author.fullName}</h5>
             <p class="card-text content-text" maxlength="200"  style="height:200px">${newstr}</p>
@@ -104,7 +105,7 @@ class homePageTest extends React.Component {
         10
       )}</i>
       </small>
-    </div>
+      </div>
         </a>
              
       <!-- Modal -->
@@ -139,12 +140,75 @@ class homePageTest extends React.Component {
           window.alert(error.message);
         });
       // end test
-      */
     } else {
       window.location.href = "/signin";
     }
   }
-
+  /*showPost = data => {
+    for (let i = 0; i < data.data.length; i++) {
+      if (data.data[i].content.length > 267) {
+        var newstr = data.data[i].content.substring(0, 267) + "...";
+      } else {
+        newstr = data.data[i].content;
+      }
+      /*document
+        .querySelector(".postScreen")
+        .insertAdjacentHTML(
+          "afterbegin",
+          `<img src="${data.data[i].imageUrl}"  style="height:200px"//>`
+        );
+      console.log(data.data[i].imageUrl);
+      document.querySelector(".postScreen").insertAdjacentHTML(
+        "afterbegin",
+        `<a class="card bg-light mb-3 border-light"
+        onClick={this.handleView;} style="width: 18rem;"
+         data-toggle="modal" data-target="#exampleModalLong${i}"
+         >
+    <img class="card-img-top" src="${
+      data.data[i].imageUrl
+    }"  style="height:200px"/>
+    <div class="card-body">
+      <h5 class="card-title" >${data.data[i].author.fullName}</h5>
+      <p class="card-text content-text" maxlength="200"  style="height:200px">${newstr}</p>
+    </div>
+    <div class="card-footer">
+<small class="text-muted">
+<i class="fas fa-eye icon"> ${data.data[i].view}</i>
+<i class="far fa-calendar-times icon"> ${data.data[i].createAt.substring(
+          0,
+          10
+        )}</i>
+</small>
+</div>
+  </a>
+       
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong${i}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title strong" id="exampleModalLongTitle">${
+          data.data[i].author.fullName
+        }</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <img class="card-img-top" src="${
+        data.data[i].imageUrl
+      }"  style="height:200px"/>
+      <div class="modal-body">
+      ${data.data[i].content}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>`
+      );
+    }
+  };*/
   upperCase(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
@@ -160,7 +224,7 @@ class homePageTest extends React.Component {
         window.localStorage.removeItem("email");
         window.localStorage.removeItem("fullName");
         window.localStorage.removeItem("id");
-        console.log(data);
+        //console.log(data);
         window.location.href = "/";
       })
       .catch(error => {
@@ -191,9 +255,36 @@ class homePageTest extends React.Component {
           return res.json();
         })
         .then(data => {
-          console.log(data);
+          //console.log(data.data.imageUrl);
+          var content = document.querySelector(".content").value;
+          //console.log(content);
+          fetch("http://localhost:3001/posts/create", {
+            credentials: "include",
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+              currentUser: this.state.currentUser,
+              content: content,
+              imageUrl: data.data.imageUrl
+            })
+          })
+            .then(res => {
+              return res.json();
+            })
+            .then(data1 => {
+              console.log(data1);
+            })
+            .catch(err => {
+              console.log(err);
+              this.setState({
+                errMessage: err.message
+              });
+            });
         })
         .catch(error => {
+          console.log(error);
           this.setState({
             errMessage: error.message
           });
@@ -208,15 +299,19 @@ class homePageTest extends React.Component {
         errMessage: "Please choose file a picture"
       });
     }
-    if (imageFile.size > 2000000) {
+    if (imageFile.size > 5000000) {
       this.setState({
-        errMessage: "Please choose file with size <2MB"
+        errMessage: "Please choose file with size <5MB"
       });
-    } else if (!imageFile.name.match(/gif|png|jpg/)) {
+    } else if (!imageFile.name.match(/jpeg|png|jpg|PNG|JPG|JPEG/)) {
       this.setState({
         errMessage: "Not recorgnize the type"
       });
     } else {
+      this.setState({
+        errMessage: ""
+      });
+      document.querySelector(".fileLabel").innerHTML = `${imageFile.name}`;
       const fileReader = new FileReader();
       fileReader.readAsDataURL(imageFile);
       fileReader.onloadend = data => {
@@ -237,7 +332,7 @@ class homePageTest extends React.Component {
     }
   }
   render() {
-    //  nsole.log(this.state);
+    console.log(this.state);
     return (
       <div>
         <nav className="navbar navbar-light bg-light">
@@ -279,7 +374,9 @@ class homePageTest extends React.Component {
             />
             <div className="dropdown-menu" aria-labelledby="navbarDropdown">
               <div className="dropdown-item email" />
-              <div className="dropdown-item fullName" />
+              <a className="dropdown-item" href="/update-profile">
+                Update profile
+              </a>
               <div className="dropdown-divider" />
               <button className="dropdown-item" onClick={this.logout}>
                 Logout
@@ -341,7 +438,7 @@ class homePageTest extends React.Component {
                           onChange={this.handleInputChange}
                         />
                         <label
-                          className="custom-file-label"
+                          className="custom-file-label fileLabel"
                           htmlFor="inputGroupFile01"
                         >
                           Select file to upload...
@@ -373,7 +470,7 @@ class homePageTest extends React.Component {
                 </form>
               </div>
               {this.state.errMessage ? (
-                <div class="alert alert-danger" role="alert">
+                <div className="alert alert-danger" role="alert">
                   {this.state.errMessage}
                 </div>
               ) : null}
@@ -387,7 +484,7 @@ class homePageTest extends React.Component {
                   Close
                 </button>
                 <button type="submit" className="btn btn-primary" form="form1">
-                  Save changes
+                  Post
                 </button>
               </div>
             </div>
