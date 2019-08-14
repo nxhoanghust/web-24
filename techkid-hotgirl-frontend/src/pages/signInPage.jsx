@@ -83,6 +83,9 @@ class signInPage extends React.Component {
             window.localStorage.setItem("email", data.data.email);
             window.localStorage.setItem("fullName", data.data.fullName);
             window.localStorage.setItem("id", data.data._id);
+            if (data.data.avaUrl) {
+              window.localStorage.setItem("avaUrl", data.data.avaUrl);
+            }
             document.querySelector(".noti").insertAdjacentHTML(
               "beforeend",
               `<div classNameName="alert alert-success" role="alert">

@@ -123,7 +123,7 @@ userRouter.post("/login", (req, res) => {
     }
     verify().catch(console.error);
   } else {
-    console.log(req.body);
+    //console.log(req.body);
     const { email, password } = req.body;
     //check email
     UserModel.findOne({ email: email }, (error, data) => {
@@ -144,7 +144,8 @@ userRouter.post("/login", (req, res) => {
           req.session.currentUser = {
             _id: data._id,
             email: data.email,
-            fullName: data.fullName
+            fullName: data.fullName,
+            avaUrl: data.avatar
           };
           //console.log(req.session.id);
           //console.log('Current User:', req.session.currentUser);
@@ -152,7 +153,6 @@ userRouter.post("/login", (req, res) => {
             success: true,
             message: "Login successful",
             data: req.session.currentUser
-
           });
         } else {
           res.status(400).json({
@@ -165,6 +165,41 @@ userRouter.post("/login", (req, res) => {
   }
 });
 
+userRouter.post("/update", (req, res) => {
+  //console.log(req.body);
+  UserModel.findByIdAndUpdate(
+    req.body._id,
+    {
+      fullName: req.body.fullName,
+      DOB: req.body.dateOfBirth,
+      address: req.body.address,
+      avatar: req.body.avaUrl
+    },
+    err => {
+      res.status(500).json({
+        success:false,
+        error:err.message
+      })
+    }
+  );
+});
+
+userRouter.post("/profile", (req, res) => {
+  console.log(req.body);
+  UserModel.findById(req.body._id,'DOB address', (error, data) => {
+    if (error) {
+      res.status(500).json({
+        success: false,
+        message: error.message
+      });
+    } else {
+      res.status(200).json({
+        success: true,
+        data: data
+      });
+    }
+  });
+});
 userRouter.get("/logout", (req, res) => {
   req.session.destroy(error => {
     if (error) {

@@ -20,7 +20,7 @@ uploadRouter.post("/image", upload.single("image"), (req, res) => {
       res.status(200).json({
         success: true,
         data: {
-          imageUrl: `http:/localhost:3001/${newNameFile}`
+          imageUrl: `http://localhost:3001/${newNameFile}`
         }
       });
     }

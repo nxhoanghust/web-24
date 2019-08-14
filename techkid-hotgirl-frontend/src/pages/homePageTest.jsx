@@ -53,20 +53,22 @@ class homePageTest extends React.Component {
     imageSrc: "",
     imgFile: undefined,
     errMessage: "",
+    avaUrl: "",
     postImg: []
   };
   componentDidMount() {
     const email = window.localStorage.getItem("email");
     const fullName = window.localStorage.getItem("fullName");
     const id = window.localStorage.getItem("id");
-
+    const ava = window.localStorage.getItem("avaUrl");
     if (email && fullName) {
       this.setState({
         currentUser: {
           _id: id,
           email: email,
           fullName: fullName
-        }
+        },
+        avaUrl: ava
       });
 
       // test hw
@@ -224,6 +226,9 @@ class homePageTest extends React.Component {
         window.localStorage.removeItem("email");
         window.localStorage.removeItem("fullName");
         window.localStorage.removeItem("id");
+        if (window.localStorage.avaUrl) {
+          window.localStorage.removeItem("avaUrl");
+        }
         //console.log(data);
         window.location.href = "/";
       })
@@ -275,6 +280,7 @@ class homePageTest extends React.Component {
             })
             .then(data1 => {
               console.log(data1);
+              window.location.href = "/";
             })
             .catch(err => {
               console.log(err);
@@ -363,6 +369,15 @@ class homePageTest extends React.Component {
             New Posts
           </button>
           <div className="nav-item dropdown">
+            <img
+              src={this.state.avaUrl}
+              style={{
+                width: "30px",
+                borderRadius: "50%",
+                marginLeft: "auto",
+                marginRight: "auto"
+              }}
+            />
             <a
               className="nav-link dropdown-toggle fullName1"
               id="navbarDropdown"
