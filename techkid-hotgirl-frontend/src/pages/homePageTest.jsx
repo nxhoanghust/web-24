@@ -2,49 +2,10 @@ import React from "react";
 import "./style4.css";
 
 class homePageTest extends React.Component {
-  /*componentDidMount() {
-    
-    fetch("http://localhost:3001/users/test/", {
-      credentials: "include",
-      method: "GET"
-    })
-      .then(res => {
-        return res.json();
-      })
-      .then(data => {
-        if (data.success == false) {
-          console.log("false");
-          this.props.history.push(`/signin`);
-          //window.location.href = "/signin";
-        } else {
-          console.log(data);
-              
-          document.querySelector(".fullName").innerHTML = `FullName: ${
-            data.data.fullName
-          }`;
-          document.querySelector(".fullName1").innerHTML = `${
-            data.data.fullName
-          }  `;
-          document.querySelector(".email").innerHTML = `Email: ${
-            data.data.email
-          }`;
-          if (data.data.img) {
-            document
-              .querySelector(".fullName1")
-              .insertAdjacentHTML(
-                "afterbegin",
-                `<img src=${data.data.img} class="ava" height="30" width="30">`
-              );
-          }
-        }
-      })
-      .catch(error => {
-        console.log(error);
-        window.alert(error.message);
-      });
-
-  }*/
   state = {
+    pageNumber: 1,
+    PageSize: 3,
+    total: 0,
     currentUser: {
       email: "",
       fullName: "",
@@ -54,7 +15,7 @@ class homePageTest extends React.Component {
     imgFile: undefined,
     errMessage: "",
     avaUrl: "",
-    postImg: []
+    data: []
   };
   componentDidMount() {
     const email = window.localStorage.getItem("email");
@@ -74,21 +35,29 @@ class homePageTest extends React.Component {
       // test hw
       document.querySelector(".fullName1").innerHTML = `${fullName}  `;
       document.querySelector(".email").innerHTML = `Email: ${email}`;
-      fetch("http://localhost:3001/posts/get", { method: "GET" })
+      fetch(
+        `http://localhost:3001/posts/get?pageNumber=${
+          this.state.pageNumber
+        }&pageSize=${this.state.PageSize}`,
+        { method: "GET" }
+      )
         .then(res => {
           return res.json();
         })
         .then(data => {
           console.log(data);
+          this.setState({
+            total: data.total
+          });
           for (let i = 0; i < data.data.length; i++) {
             if (data.data[i].content.length > 267) {
               var newstr = data.data[i].content.substring(0, 267) + "...";
             } else {
               newstr = data.data[i].content;
             }
-            console.log(data.data[i].imageUrl);
+            //console.log(data.data[i].imageUrl);
             document.querySelector(".postScreen").insertAdjacentHTML(
-              "afterbegin",
+              "beforeend",
               `<a class="card bg-light mb-3 border-light" style="width: 18rem;"
                data-toggle="modal" data-target="#exampleModalLong${i}"
                >
@@ -146,74 +115,7 @@ class homePageTest extends React.Component {
       window.location.href = "/signin";
     }
   }
-  /*showPost = data => {
-    for (let i = 0; i < data.data.length; i++) {
-      if (data.data[i].content.length > 267) {
-        var newstr = data.data[i].content.substring(0, 267) + "...";
-      } else {
-        newstr = data.data[i].content;
-      }
-      /*document
-        .querySelector(".postScreen")
-        .insertAdjacentHTML(
-          "afterbegin",
-          `<img src="${data.data[i].imageUrl}"  style="height:200px"//>`
-        );
-      console.log(data.data[i].imageUrl);
-      document.querySelector(".postScreen").insertAdjacentHTML(
-        "afterbegin",
-        `<a class="card bg-light mb-3 border-light"
-        onClick={this.handleView;} style="width: 18rem;"
-         data-toggle="modal" data-target="#exampleModalLong${i}"
-         >
-    <img class="card-img-top" src="${
-      data.data[i].imageUrl
-    }"  style="height:200px"/>
-    <div class="card-body">
-      <h5 class="card-title" >${data.data[i].author.fullName}</h5>
-      <p class="card-text content-text" maxlength="200"  style="height:200px">${newstr}</p>
-    </div>
-    <div class="card-footer">
-<small class="text-muted">
-<i class="fas fa-eye icon"> ${data.data[i].view}</i>
-<i class="far fa-calendar-times icon"> ${data.data[i].createAt.substring(
-          0,
-          10
-        )}</i>
-</small>
-</div>
-  </a>
-       
-<!-- Modal -->
-<div class="modal fade" id="exampleModalLong${i}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3 class="modal-title strong" id="exampleModalLongTitle">${
-          data.data[i].author.fullName
-        }</h3>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <img class="card-img-top" src="${
-        data.data[i].imageUrl
-      }"  style="height:200px"/>
-      <div class="modal-body">
-      ${data.data[i].content}
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-      </div>
-    </div>
-  </div>
-</div>`
-      );
-    }
-  };*/
-  upperCase(string) {
-    return string.charAt(0).toUpperCase() + string.slice(1);
-  }
+
   logout() {
     fetch("http://localhost:3001/users/logout", {
       credentials: "include",
@@ -329,16 +231,172 @@ class homePageTest extends React.Component {
     }
     //validate image:size+
   };
-  validateUrl(url) {
-    var expression = /[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b([-a-zA-Z0-9()@:%_\+.~#?&//=]*)?/gi;
-    if (expression.test(url)) {
-      return true;
-    } else {
-      return false;
+  handlePaginationClick = event => {
+    //console.log(event.target.innerText);
+    //set state
+    this.setState({
+      pageNumber: Number(event.target.innerText)
+    });
+
+    //fetch api
+    fetch(
+      `http://localhost:3001/posts/get?pageNumber=${
+        event.target.innerText
+      }&pageSize=${this.state.PageSize}`,
+      { method: "GET" }
+    )
+      .then(res => {
+        return res.json();
+      })
+      .then(data => {
+        console.log(data);
+        this.setState({
+          total: data.total
+        });
+        while (document.querySelector(".postScreen").firstChild) {
+          document
+            .querySelector(".postScreen")
+            .removeChild(document.querySelector(".postScreen").firstChild);
+        }
+        this.insertPost(data);
+      })
+      .catch(error => {
+        console.log(error);
+        window.alert(error.message);
+      });
+  };
+
+  insertPost = data => {
+    for (let i = 0; i < data.data.length; i++) {
+      if (data.data[i].content.length > 267) {
+        var newstr = data.data[i].content.substring(0, 267) + "...";
+      } else {
+        newstr = data.data[i].content;
+      }
+      document.querySelector(".postScreen").insertAdjacentHTML(
+        "beforeend",
+        `<a class="card bg-light mb-3 border-light" style="width: 18rem;"
+         data-toggle="modal" data-target="#exampleModalLong${i}"
+         >
+    <img class="card-img-top" src=${
+      data.data[i].imageUrl
+    }  style="height:200px" />
+    <div class="card-body">
+      <h5 class="card-title" >${data.data[i].author.fullName}</h5>
+      <p class="card-text content-text" maxlength="200"  style="height:200px">${newstr}</p>
+    </div>
+    <div class="card-footer">
+<small class="text-muted">
+<i class="fas fa-eye icon"> ${data.data[i].view}</i>
+<i class="far fa-calendar-times icon"> ${data.data[i].createAt.substring(
+          0,
+          10
+        )}</i>
+</small>
+</div>
+  </a>
+       
+<!-- Modal -->
+<div class="modal fade" id="exampleModalLong${i}" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3 class="modal-title strong" id="exampleModalLongTitle">${
+          data.data[i].author.fullName
+        }</h3>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <img class="card-img-top" src="${
+        data.data[i].imageUrl
+      }"  style="height:200px"/>
+      <div class="modal-body">
+      ${data.data[i].content}
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>`
+      );
     }
-  }
+  };
+  nextPagination = () => {
+    if (
+      this.state.pageNumber !==
+      Math.ceil(this.state.total / this.state.PageSize)
+    ) {
+      fetch(
+        `http://localhost:3001/posts/get?pageNumber=${this.state.pageNumber +
+          1}&pageSize=${this.state.PageSize}`,
+        { method: "GET" }
+      )
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          console.log(data);
+          this.setState({
+            total: data.total
+          });
+          while (document.querySelector(".postScreen").firstChild) {
+            document
+              .querySelector(".postScreen")
+              .removeChild(document.querySelector(".postScreen").firstChild);
+          }
+          this.insertPost(data);
+        })
+        .catch(error => {
+          console.log(error);
+          window.alert(error.message);
+        });
+      this.setState({
+        pageNumber: this.state.pageNumber + 1
+      });
+    }
+  };
+  prevPagination = () => {
+    if (this.state.pageNumber !== 1) {
+      fetch(
+        `http://localhost:3001/posts/get?pageNumber=${this.state.pageNumber -
+          1}&pageSize=${this.state.PageSize}`,
+        { method: "GET" }
+      )
+        .then(res => {
+          return res.json();
+        })
+        .then(data => {
+          console.log(data);
+          this.setState({
+            total: data.total
+          });
+          while (document.querySelector(".postScreen").firstChild) {
+            document
+              .querySelector(".postScreen")
+              .removeChild(document.querySelector(".postScreen").firstChild);
+          }
+          this.insertPost(data);
+        })
+        .catch(error => {
+          console.log(error);
+          window.alert(error.message);
+        });
+      this.setState({
+        pageNumber: this.state.pageNumber - 1
+      });
+    }
+  };
   render() {
-    console.log(this.state);
+    const myArray = [];
+    for (
+      let i = 0;
+      i < Math.ceil(this.state.total / this.state.PageSize);
+      i++
+    ) {
+      myArray.push(i);
+    }
     return (
       <div>
         <nav className="navbar navbar-light bg-light">
@@ -505,6 +563,49 @@ class homePageTest extends React.Component {
             </div>
           </div>
         </div>
+        <nav aria-label="Page navigation example" className="pagination">
+          <ul className="pagination mt-4 ">
+            <li className="page-item">
+              <a
+                className="page-link"
+                aria-label="Previous"
+                onClick={this.prevPagination}
+              >
+                <span aria-hidden="true">&laquo;</span>
+                <span className="sr-only">Previous</span>
+              </a>
+            </li>
+            {myArray.map(item => {
+              return (
+                <li
+                  className={
+                    this.state.pageNumber === item + 1
+                      ? "page-item active"
+                      : "page-item"
+                  }
+                >
+                  <a
+                    className="page-link "
+                    onClick={this.handlePaginationClick}
+                  >
+                    {item + 1}
+                  </a>
+                </li>
+              );
+            })}
+
+            <li className="page-item">
+              <a
+                className="page-link"
+                aria-label="Next"
+                onClick={this.nextPagination}
+              >
+                <span aria-hidden="true">&raquo;</span>
+                <span className="sr-only">Next</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
       </div>
     );
   }

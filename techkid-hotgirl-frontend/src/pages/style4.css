@@ -51,7 +51,6 @@
   margin-right: 25px;
 }
 
-.navigation {
-  margin-left: auto;
-  margin-right: auto;
+.pagination {
+  margin-left: 25% !important;
 }
